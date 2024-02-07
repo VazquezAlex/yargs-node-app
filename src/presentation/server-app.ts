@@ -1,3 +1,5 @@
+import { CreateTable } from "../domain/use-cases/create-table.use-case";
+import { SaveFile } from '../domain/use-cases/save-file.use-case';
 
 interface RunOptions {
     base: number;
@@ -7,8 +9,22 @@ interface RunOptions {
 
 export class ServerApp {
 
-    static run(options: RunOptions) {
+    static run({ base, limit, showTable }: RunOptions) {
         console.log('Server running...');
+
+        const table = new CreateTable().execute({ base, limit });
+        const fileWasCreated = new SaveFile().execute({ 
+            fileContent: table,
+            fileDestination: 'outputs/tables',
+            fileName: `table-${base}`
+        });
+
+        if (showTable) console.log(table);
+
+        ( fileWasCreated )
+            ? console.log('File was created successfully')
+            : console.log('File was not created successfully'); 
+        
     }
 
 }
