@@ -1,26 +1,13 @@
-// Core imports.
-import fs from 'fs';
+import { yarg } from "./config/plugins/args.plugin";
+import { ServerApp } from "./presentation/server-app";
 
+(async () => {
+    await main();
+})();
 
-let outputMessage = '';
-const base = 6;
-const headerMessage = `
-================================================
-               Tabla del ${ base }
-================================================
-`;
+async function main() {
 
-for (let i = 1; i <= 10; i++) {
-    outputMessage += `${ i } x ${ base } = ${ i * base }\n`;
+    const { b: base, l: limit, s: showTable } = yarg;
+
+    ServerApp.run({ base, limit, showTable });
 }
-
-outputMessage = headerMessage + outputMessage;
-
-const outputPath = `outputs`
-
-// Create the folder if it doesn't exist.
-fs.mkdirSync(outputPath, { recursive: true });
-
-// Save the file.
-fs.writeFileSync(`${ outputPath }/table-${ base }.txt`, outputMessage);
-console.log('File Created');
