@@ -21,6 +21,18 @@ export const yarg = yargs(process.argv)
         default: false,
         description: 'Show the multiplication table'
     })
+    .option('n', {
+        alias: 'name',
+        type:'string',
+        default: 'table',
+        description: 'Name of the file'
+    })
+    .option('d', {
+        alias: 'destination',
+        type:'string',
+        default: 'outputs/tables',
+        description: 'Destination of the file'
+    })
     .check((argv, options) => {
         if (argv.b < 0) throw 'Error: b must be greater than 0';
         if (argv.l < 0) throw 'Error: l must be greater than 0';

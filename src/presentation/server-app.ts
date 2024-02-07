@@ -3,20 +3,22 @@ import { SaveFile } from '../domain/use-cases/save-file.use-case';
 
 interface RunOptions {
     base: number;
+    fileDestination: string;
+    fileName: string;
     limit: number;
     showTable: boolean;
 }
 
 export class ServerApp {
 
-    static run({ base, limit, showTable }: RunOptions) {
+    static run({ base, limit, showTable, fileName, fileDestination }: RunOptions) {
         console.log('Server running...');
 
         const table = new CreateTable().execute({ base, limit });
         const fileWasCreated = new SaveFile().execute({ 
             fileContent: table,
-            fileDestination: 'outputs/tables',
-            fileName: `table-${base}`
+            fileDestination,
+            fileName,
         });
 
         if (showTable) console.log(table);
